@@ -1,0 +1,161 @@
+$primary-color: #ff7043; /* Assuming this is the color from the recipe book */
+$secondary-color: #ffab91;
+$text-color: #333;
+$background-color: #fff;
+$header-background: #212121;
+$hover-color: #ff5722;
+
+.meal-planner {
+  font-family: Arial, sans-serif;
+  background-color: $background-color;
+  height: 100vh;
+
+  header {
+    background-color: $header-background;
+    color: $primary-color;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+
+      a {
+        color: $primary-color;
+        margin-right: 15px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      button {
+        padding: 8px 15px;
+        background-color: $primary-color;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-right: 15px;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: $hover-color;
+        }
+      }
+
+      .user {
+        img {
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    height: calc(100% - 70px); /* Subtracting the height of header */
+
+    .recipes-list {
+      width: 250px;
+      background-color: $background-color;
+      padding: 20px;
+      border-right: 1px solid $secondary-color;
+      overflow-y: auto;
+
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid $primary-color;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+          padding: 12px;
+          border-bottom: 1px solid $secondary-color;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: $hover-color;
+            color: white;
+          }
+        }
+      }
+    }
+
+    .planner {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+
+      .planner-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+
+        button {
+          background-color: $primary-color;
+          border: 1px solid $secondary-color;
+          padding: 5px 10px;
+          color: white;
+          cursor: pointer;
+
+          &:hover {
+            background-color: $hover-color;
+          }
+        }
+
+        span {
+          font-size: 1.2rem;
+          color: $text-color;
+        }
+      }
+
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+
+        .day {
+          background-color: $background-color;
+          padding: 20px;
+          border: 1px solid $secondary-color;
+          text-align: center;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: $hover-color;
+            color: white;
+          }
+        }
+      }
+
+      .add-to-shopping-list {
+        align-self: flex-end;
+        padding: 12px 20px;
+        background-color: $primary-color;
+        color: white;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $hover-color;
+        }
+      }
+    }
+  }
+}
