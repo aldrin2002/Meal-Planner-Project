@@ -6,10 +6,8 @@ import { MealPlannerComponent } from './parts/meal-planner/meal-planner.componen
 const routes: Routes = [
   { path: '', redirectTo: '/landing-page', pathMatch: 'full' },
   { path: 'landing-page', component: LandingPageComponent },
-  { path: 'meal-planner', component: MealPlannerComponent},
-  
+  { path: 'meal-planner', component: MealPlannerComponent },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -1,45 +1,66 @@
 <div class="meal-planner">
-    <header>
-        <!--ayusin mo nalang yung sa may path ng mga links salamat-->
-      <h1>MealHub</h1>
-      <nav>
-        <a [routerLink]="['/landing-page']">Home</a>
-        <a href="#">Explore Recipes</a>
-        <a href="#">Meal Planner</a>
-        <a [routerLink]="['/']">About</a>
-        <button>Add Recipe</button>
-        <div class="user">
-          <img src="path-to-profile-pic" alt="User Profile Picture" />
-        </div>
-      </nav>
-    </header>
-  
-    <div class="content">
-        <!-- Sidebar -->
-        <div class="recipes-list">
-          <h3>My Recipes</h3>
-          <ul>
-            <li *ngFor="let meal of meals" (click)="selectMeal(meal)">
-              {{ meal.name }}
-            </li>
-          </ul>
-        </div>
-    
-      
-      <!-- Main Planner Section -->
-      <section class="planner">
-        <div class="planner-header">
-          <button (click)="goToPreviousWeek()"> &lt; </button>
-          <span>{{ weekRange }}</span>
-          <button (click)="goToNextWeek()"> &gt; </button>
-          <button (click)="goToToday()">Today</button>
-        </div>
-        <div class="calendar">
-          <div *ngFor="let day of daysOfWeek" class="day">
-            {{ day }}
-          </div>
-        </div>
-      </section>
+  <header>
+    <h1>MealHub</h1>
+    <nav>
+      <a [routerLink]="['/landing-page']">Home</a>
+      <a [routerLink]="['/']">About</a>
+    </nav>
+  </header>
+
+  <div class="content">
+    <!-- Sidebar for Recipes -->
+    <div class="recipes-list">
+      <h3>Recipes</h3>
+      <ul>
+        <li *ngFor="let meal of meals" class="draggable">
+          {{ meal.name }}
+        </li>
+      </ul>
     </div>
+
+    <!-- Planner Section -->
+    <section class="planner">
+      <div class="planner-header">
+        <button (click)="goToPreviousWeek()">&lt;</button>
+        <span>{{ weekRange }}</span>
+        <button (click)="goToNextWeek()">&gt;</button>
+        <button (click)="goToToday()">Today</button>
+      </div>
+
+      <table class="calendar-table">
+        <thead>
+          <tr>
+            <th *ngFor="let day of daysOfWeek">{{ day }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td *ngFor="let day of daysOfWeek" class="drop-box">
+              <div *ngFor="let meal of plannedMeals[day]">
+                {{ meal.name }}
+                <button (click)="removeMealFromDay(meal, day)">Remove</button>
+              </div>
+            </td>
+          </tr>
+          <!-- Additional Rows for More Boxes -->
+          <tr>
+            <td *ngFor="let day of daysOfWeek" class="drop-box">
+              <div *ngFor="let meal of plannedMeals[day]">
+                {{ meal.name }}
+                <button (click)="removeMealFromDay(meal, day)">Remove</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td *ngFor="let day of daysOfWeek" class="drop-box">
+              <div *ngFor="let meal of plannedMeals[day]">
+                {{ meal.name }}
+                <button (click)="removeMealFromDay(meal, day)">Remove</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   </div>
-  
+</div>

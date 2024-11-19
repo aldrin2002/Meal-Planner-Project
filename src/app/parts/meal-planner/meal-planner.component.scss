@@ -1,9 +1,57 @@
-$primary-color: #ff7043; /* Assuming this is the color from the recipe book */
+$primary-color: #ff7043;
 $secondary-color: #ffab91;
 $text-color: #333;
 $background-color: #fff;
 $header-background: #212121;
 $hover-color: #ff5722;
+
+.draggable-recipe {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #ff7043;
+  color: white;
+  border-radius: 5px;
+  cursor: grab;
+}
+
+.droppable-cell {
+  min-height: 100px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+
+  .planned-meal {
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #ffab91;
+    border-radius: 3px;
+    text-align: center;
+  }
+}
+
+/* Styling for the recipes list sidebar */
+.recipes-list {
+  max-height: 530px; /* Adjust the height as needed */
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding-right: 10px; /* Adds a little padding for aesthetics */
+  margin-right: 15px; /* Margin to prevent collision with other elements */
+  border-right: 1px solid #ccc; /* Optional border for aesthetics */
+}
+
+.recipes-list ul {
+  list-style-type: none; /* Removes default list bullets */
+  padding: 0;
+  margin: 0;
+}
+
+.recipes-list li {
+  padding: 5px;
+  border-bottom: 1px solid #eee; /* Adds a border between items */
+}
+
+.recipes-list li:hover {
+  background-color: #f0f0f0; /* Optional hover effect */
+}
 
 .meal-planner {
   font-family: Arial, sans-serif;
@@ -23,81 +71,38 @@ $hover-color: #ff5722;
       font-size: 1.8rem;
     }
 
-    nav {
-      display: flex;
-      align-items: center;
-
-      a {
-        color: $primary-color;
-        margin-right: 15px;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      button {
-        padding: 8px 15px;
-        background-color: $primary-color;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin-right: 15px;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          background-color: $hover-color;
-        }
-      }
-
-      .user {
-        img {
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
-        }
-      }
+    nav a {
+      color: $primary-color;
+      margin-right: 15px;
+      text-decoration: none;
+      font-weight: bold;
     }
   }
 
   .content {
     display: flex;
-    height: calc(100% - 70px); /* Subtracting the height of header */
+    height: calc(100% - 70px);
 
     .recipes-list {
       width: 250px;
       background-color: $background-color;
       padding: 20px;
       border-right: 1px solid $secondary-color;
-      overflow-y: auto;
 
-      select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid $primary-color;
-      }
+      ul li {
+        padding: 12px;
+        border-bottom: 1px solid $secondary-color;
+        cursor: pointer;
 
-      ul {
-        list-style: none;
-        padding: 0;
-
-        li {
-          padding: 12px;
-          border-bottom: 1px solid $secondary-color;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-
-          &:hover {
-            background-color: $hover-color;
-            color: white;
-          }
+        &:hover {
+          background-color: $hover-color;
+          color: white;
         }
       }
     }
 
     .planner {
       flex-grow: 1;
-      display: flex;
-      flex-direction: column;
       padding: 20px;
 
       .planner-header {
@@ -108,10 +113,9 @@ $hover-color: #ff5722;
 
         button {
           background-color: $primary-color;
-          border: 1px solid $secondary-color;
-          padding: 5px 10px;
+          padding: 8px 15px;
           color: white;
-          cursor: pointer;
+          border: none;
 
           &:hover {
             background-color: $hover-color;
@@ -120,40 +124,32 @@ $hover-color: #ff5722;
 
         span {
           font-size: 1.2rem;
-          color: $text-color;
         }
       }
 
-      .calendar {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 10px;
-        margin-bottom: 20px;
+      .calendar-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
 
-        .day {
-          background-color: $background-color;
-          padding: 20px;
+        th, td {
           border: 1px solid $secondary-color;
+          padding: 15px;
           text-align: center;
-          transition: background-color 0.3s ease;
+        }
+
+        th {
+          background-color: $primary-color;
+          color: white;
+        }
+
+        td {
+          background-color: $background-color;
 
           &:hover {
             background-color: $hover-color;
             color: white;
           }
-        }
-      }
-
-      .add-to-shopping-list {
-        align-self: flex-end;
-        padding: 12px 20px;
-        background-color: $primary-color;
-        color: white;
-        border: none;
-        cursor: pointer;
-
-        &:hover {
-          background-color: $hover-color;
         }
       }
     }
