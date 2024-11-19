@@ -41,6 +41,21 @@ $hover-color: #ff5722;
   transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }
 
+/* Disable text selection for draggable items */
+.cdk-drag {
+  user-select: none; /* Disable text selection */
+  cursor: grab;      /* Show grab cursor */
+}
+
+.cdk-drag:active {
+  cursor: grabbing;  /* Show grabbing cursor when active */
+}
+
+/* Optional: Prevent highlighting in the planner table */
+td.drop-box {
+  user-select: none; /* Disable text selection inside planner cells */
+}
+
 button {
   margin-left: 10px;
   padding: 8px 16px;

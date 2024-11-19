@@ -35,7 +35,15 @@ export class MealPlannerComponent implements OnInit {
   ngOnInit(): void {
     this.fetchMeals();
     this.updateCalendar();
+     // Prevent text selection globally
+  document.addEventListener('mousedown', (event) => {
+    if ((event.target as HTMLElement).classList.contains('cdk-drag')) {
+      event.preventDefault(); // Prevent default text selection
+    }
+  });
+
   }
+  
 
   fetchMeals() {
     this.http.get<{ status: string; data: Meal[] }>('http://localhost/api/api.php')
