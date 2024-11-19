@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { jsPDF } from 'jspdf';
 
 interface Meal {
   id: number;
@@ -9,14 +12,23 @@ interface Meal {
 @Component({
   selector: 'app-meal-planner',
   templateUrl: './meal-planner.component.html',
-  styleUrls: ['./meal-planner.component.scss']
+  styleUrls: ['./meal-planner.component.scss'],
+  animations: [
+    trigger('dragMove', [
+      transition('* => *', [
+        style({ transform: 'scale(1)', opacity: 0.8 }),
+        animate('300ms ease-out', style({ transform: 'scale(1)', opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class MealPlannerComponent implements OnInit {
-  meals: Meal[] = []; // List of meals
-  daysOfWeek: string[] = []; // Days displayed in the planner
-  weekRange: string = ''; // Week range displayed in the header
-  currentDate: Date = new Date(); // Current date used to calculate week range
-  plannedMeals: { [key: string]: Meal[] } = {}; // Meals planned per day
+  meals: Meal[] = [];
+  daysOfWeek: string[] = [];
+  weekRange: string = '';
+  currentDate: Date = new Date();
+  plannedMeals: { [key: string]: Meal[] } = {};
+  connectedLists: string[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -28,20 +40,25 @@ export class MealPlannerComponent implements OnInit {
   fetchMeals() {
     this.http.get<{ status: string; data: Meal[] }>('http://localhost/api/api.php')
       .subscribe(
-        (response) => {
+        response => {
           if (response.status === 'success') {
             this.meals = response.data;
+            this.sortMeals();
           }
         },
-        (error) => {
+        error => {
           console.error('Error fetching meals:', error);
         }
       );
   }
 
+  sortMeals() {
+    this.meals.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
   getWeekDates(date: Date) {
-    const startDate = date.getDate() - date.getDay(); // Start of the week
-    const endDate = startDate + 6; // End of the week
+    const startDate = date.getDate() - date.getDay();
+    const endDate = startDate + 6;
 
     const startOfWeek = new Date(date.setDate(startDate));
     const endOfWeek = new Date(date.setDate(endDate));
@@ -52,20 +69,38 @@ export class MealPlannerComponent implements OnInit {
   updateCalendar() {
     const { startOfWeek, endOfWeek } = this.getWeekDates(new Date(this.currentDate));
 
-    const startDateStr = startOfWeek.toLocaleDateString("en-US", { weekday: 'short', month: 'short', day: 'numeric' });
-    const endDateStr = endOfWeek.toLocaleDateString("en-US", { weekday: 'short', month: 'short', day: 'numeric' });
-    this.weekRange = `${startDateStr} - ${endDateStr}`;
-
+    this.weekRange = `${startOfWeek.toLocaleDateString()} - ${endOfWeek.toLocaleDateString()}`;
     this.daysOfWeek = [];
+    this.connectedLists = ['recipesList'];
+
     for (let i = 0; i < 7; i++) {
       const day = new Date(startOfWeek);
       day.setDate(day.getDate() + i);
-      const dayStr = day.toLocaleDateString("en-US", { weekday: 'short', month: 'short', day: 'numeric' });
-      this.daysOfWeek.push(dayStr);
+      const dayStr = day.toDateString();
 
-      // Initialize an empty array for each day in plannedMeals if it doesn't exist
-      if (!this.plannedMeals[dayStr]) {
-        this.plannedMeals[dayStr] = [];
+      this.daysOfWeek.push(dayStr);
+      if (!this.plannedMeals[dayStr]) this.plannedMeals[dayStr] = [];
+      this.connectedLists.push(dayStr);
+    }
+  }
+
+  onDrop(event: CdkDragDrop<Meal[]>, day?: string) {
+    if (event.previousContainer === event.container) {
+      return;
+    }
+
+    if (day) {
+      const meal = event.previousContainer.data[event.previousIndex];
+      if (!this.plannedMeals[day].includes(meal)) {
+        this.plannedMeals[day].push(meal);
+        event.previousContainer.data.splice(event.previousIndex, 1);
+      }
+    } else {
+      const meal = event.previousContainer.data[event.previousIndex];
+      if (!this.meals.includes(meal)) {
+        this.meals.push(meal);
+        event.previousContainer.data.splice(event.previousIndex, 1);
+        this.sortMeals();
       }
     }
   }
@@ -89,6 +124,36 @@ export class MealPlannerComponent implements OnInit {
     const index = this.plannedMeals[day].indexOf(meal);
     if (index !== -1) {
       this.plannedMeals[day].splice(index, 1);
+      this.meals.push(meal);
+      this.sortMeals();
     }
+  }
+
+  downloadPDF() {
+    const doc = new jsPDF();
+    let y = 10;
+
+    doc.setFontSize(16);
+    doc.text('Meal Planner for the Week', 20, y);
+    y += 10;
+
+    this.daysOfWeek.forEach(day => {
+      doc.setFontSize(12);
+      doc.text(day, 20, y);
+      y += 6;
+
+      if (this.plannedMeals[day]?.length) {
+        this.plannedMeals[day].forEach(meal => {
+          doc.text(`- ${meal.name}`, 30, y);
+          y += 6;
+        });
+      } else {
+        doc.text('- No meal planned', 30, y);
+        y += 6;
+      }
+      y += 6;
+    });
+
+    doc.save('meal-planner.pdf');
   }
 }

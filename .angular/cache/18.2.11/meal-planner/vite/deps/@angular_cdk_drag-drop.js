@@ -1,7 +1,7 @@
 import {
   DOCUMENT,
   isPlatformBrowser
-} from "./chunk-UF7ERQNW.js";
+} from "./chunk-R7WEWZ76.js";
 import {
   APP_ID,
   ApplicationRef,
@@ -36,7 +36,6 @@ import {
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation$1,
-  __spreadValues,
   afterNextRender,
   animationFrameScheduler,
   asapScheduler,
@@ -91,7 +90,10 @@ import {
   ɵɵqueryRefresh,
   ɵɵstyleProp,
   ɵɵviewQuery
-} from "./chunk-26TMN57U.js";
+} from "./chunk-3CTQI65T.js";
+import {
+  __spreadValues
+} from "./chunk-TXDUYLVM.js";
 
 // node_modules/@angular/cdk/fesm2022/coercion.mjs
 function coerceNumberProperty(value, fallbackValue = 0) {

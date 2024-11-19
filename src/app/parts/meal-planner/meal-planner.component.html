@@ -8,11 +8,17 @@
   </header>
 
   <div class="content">
-    <!-- Sidebar for Recipes -->
+    <!-- Recipes Sidebar -->
     <div class="recipes-list">
-      <h3>Recipes</h3>
-      <ul>
-        <li *ngFor="let meal of meals" class="draggable">
+      <h3>Recipes ({{ meals.length }})</h3>
+      <ul cdkDropList 
+          id="recipesList" 
+          [cdkDropListData]="meals" 
+          [cdkDropListConnectedTo]="connectedLists" 
+          (cdkDropListDropped)="onDrop($event)">
+        <li *ngFor="let meal of meals" 
+            cdkDrag 
+            [@dragMove]>
           {{ meal.name }}
         </li>
       </ul>
@@ -25,6 +31,7 @@
         <span>{{ weekRange }}</span>
         <button (click)="goToNextWeek()">&gt;</button>
         <button (click)="goToToday()">Today</button>
+        <button (click)="downloadPDF()">Download PDF</button>
       </div>
 
       <table class="calendar-table">
@@ -35,27 +42,18 @@
         </thead>
         <tbody>
           <tr>
-            <td *ngFor="let day of daysOfWeek" class="drop-box">
-              <div *ngFor="let meal of plannedMeals[day]">
+            <td *ngFor="let day of daysOfWeek" 
+                class="drop-box" 
+                cdkDropList 
+                [id]="day" 
+                [cdkDropListData]="plannedMeals[day]" 
+                [cdkDropListConnectedTo]="connectedLists" 
+                (cdkDropListDropped)="onDrop($event, day)">
+              <div *ngFor="let meal of plannedMeals[day]" 
+                   cdkDrag 
+                   [@dragMove] 
+                   (click)="removeMealFromDay(meal, day)">
                 {{ meal.name }}
-                <button (click)="removeMealFromDay(meal, day)">Remove</button>
-              </div>
-            </td>
-          </tr>
-          <!-- Additional Rows for More Boxes -->
-          <tr>
-            <td *ngFor="let day of daysOfWeek" class="drop-box">
-              <div *ngFor="let meal of plannedMeals[day]">
-                {{ meal.name }}
-                <button (click)="removeMealFromDay(meal, day)">Remove</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td *ngFor="let day of daysOfWeek" class="drop-box">
-              <div *ngFor="let meal of plannedMeals[day]">
-                {{ meal.name }}
-                <button (click)="removeMealFromDay(meal, day)">Remove</button>
               </div>
             </td>
           </tr>

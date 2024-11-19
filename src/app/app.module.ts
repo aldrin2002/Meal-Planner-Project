@@ -7,6 +7,7 @@ import { MealPlannerComponent } from './parts/meal-planner/meal-planner.componen
 import { HttpClientModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    DragDropModule // <-- Add DragDropModule here
+    DragDropModule, 
+    BrowserAnimationsModule
   ],
   providers: [
     provideAnimationsAsync()
