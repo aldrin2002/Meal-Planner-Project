@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'meal-planner';
+  title(title: any) {
+    throw new Error('Method not implemented.');
+  }
+  constructor(public authService: AuthService) {}
+
+  logout() {
+    this.authService.logout();
+    window.location.href = '/';  // Redirect to login page after logout
+  }
 }
