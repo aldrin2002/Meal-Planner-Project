@@ -10,13 +10,48 @@
   <div class="content">
     <!-- Recipes Sidebar -->
     <div class="recipes-list">
-      <h3>Recipes ({{ meals.length }})</h3>
-      <ul cdkDropList 
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          placeholder="Search recipes..." 
+          (input)="filterRecipes()" 
+        />
+      </div>
+
+      <div class="recipes-header">
+        <h3>Recipes ({{ filteredMeals.length }})</h3>
+        <button (click)="toggleCategoryMenu()" class="category-toggle-btn">☰</button>
+      </div>
+      
+      <div *ngIf="categoryMenuVisible" class="category-menu">
+        <button (click)="selectCategory('default')">Recipes</button>
+        <button (click)="selectCategory('user')">User Recipes</button>
+      </div>
+
+      <!-- Default Recipes Sidebar -->
+      <ul *ngIf="activeCategory === 'default'" 
+          cdkDropList 
           id="recipesList" 
-          [cdkDropListData]="meals" 
+          [cdkDropListData]="filteredMeals" 
           [cdkDropListConnectedTo]="connectedLists" 
           (cdkDropListDropped)="onDrop($event)">
-        <li *ngFor="let meal of meals" 
+        <li *ngFor="let meal of filteredMeals" 
+            cdkDrag 
+            [@dragMove]>
+          {{ meal.name }}
+        </li>
+      </ul>
+
+      <!-- User Recipes Sidebar -->
+      <ul *ngIf="activeCategory === 'user'" 
+          cdkDropList 
+          id="userRecipesList" 
+          [cdkDropListData]="userMeals" 
+          [cdkDropListConnectedTo]="connectedLists" 
+          (cdkDropListDropped)="onDrop($event)">
+        <li *ngFor="let meal of userMeals" 
             cdkDrag 
             [@dragMove]>
           {{ meal.name }}

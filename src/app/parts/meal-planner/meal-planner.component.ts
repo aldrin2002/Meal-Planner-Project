@@ -24,17 +24,24 @@ interface Meal {
 })
 export class MealPlannerComponent implements OnInit {
   meals: Meal[] = [];
+  userMeals: Meal[] = [];
   daysOfWeek: string[] = [];
   weekRange: string = '';
   currentDate: Date = new Date();
   plannedMeals: { [key: string]: Meal[] } = {};
   connectedLists: string[] = [];
+  categoryMenuVisible: boolean = false;
+  activeCategory: string = 'default';
+  filteredMeals: Meal[] = [];
+  searchTerm: string = '';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.fetchMeals();
+    this.fetchUserMeals();
     this.updateCalendar();
+    
      // Prevent text selection globally
   document.addEventListener('mousedown', (event) => {
     if ((event.target as HTMLElement).classList.contains('cdk-drag')) {
@@ -43,14 +50,26 @@ export class MealPlannerComponent implements OnInit {
   });
 
   }
-  
+  filterRecipes() {
+    this.filteredMeals = this.meals.filter(meal =>
+      meal.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
 
+  toggleCategoryMenu() {
+    this.categoryMenuVisible = !this.categoryMenuVisible;
+  }
+  selectCategory(category: string) {
+    this.activeCategory = category;
+    this.categoryMenuVisible = false;
+  }
   fetchMeals() {
     this.http.get<{ status: string; data: Meal[] }>('http://localhost/api/api.php')
       .subscribe(
         response => {
           if (response.status === 'success') {
             this.meals = response.data;
+            this.filteredMeals = [...this.meals];
             this.sortMeals();
           }
         },
@@ -59,9 +78,23 @@ export class MealPlannerComponent implements OnInit {
         }
       );
   }
+  fetchUserMeals() {
+    this.http.get<{ status: string; data: Meal[] }>('http://localhost/api/meal.php')
+      .subscribe(
+        response => {
+          if (response.status === 'success') {
+            this.userMeals = response.data;
+          }
+        },
+        error => {
+          console.error('Error fetching user recipes:', error);
+        }
+      );
+  }
 
   sortMeals() {
     this.meals.sort((a, b) => a.name.localeCompare(b.name));
+    this.userMeals.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   getWeekDates(date: Date) {

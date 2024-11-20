@@ -93,6 +93,117 @@ button:hover {
 .recipes-list li:hover {
   background-color: #f0f0f0; /* Optional hover effect */
 }
+.recipes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-toggle-btn {
+  background: none;
+  background-color: #212121;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.search-bar {
+  margin-bottom: 10px;
+
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+}
+
+.recipes-list {
+  width: 30%;
+  margin-right: 20px;
+  margin-top: 20px; /* Lower the sidebar */
+}
+
+.category-menu {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-menu button {
+  background: #f5f5f5;
+  border: none;
+  margin: 5px 0;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.category-menu button:hover {
+  background: #ddd;
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar-table th, .calendar-table td {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 10px;
+}
+
+.drop-box {
+  min-height: 100px;
+}
+
+.category-menu {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-menu button {
+  background: #f5f5f5;
+  border: none;
+  margin: 5px 0;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.category-menu button:hover {
+  background: #ddd;
+}
+
+.content {
+  display: flex;
+}
+
+.recipes-list {
+  width: 30%;
+  margin-right: 20px;
+}
+
+.planner {
+  width: 70%;
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar-table th, .calendar-table td {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 10px;
+}
+
+.drop-box {
+  min-height: 100px;
+}
+
 
 .meal-planner {
   font-family: Arial, sans-serif;
