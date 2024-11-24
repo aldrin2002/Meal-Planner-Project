@@ -21,13 +21,19 @@
       </div>
 
       <div class="recipes-header">
-        <h3>Recipes ({{ filteredMeals.length }})</h3>
-        <button (click)="toggleCategoryMenu()" class="category-toggle-btn">☰</button>
-      </div>
+        <!-- Categories Button -->
+        <div class="category-toggle">
+          <button (click)="toggleCategoryMenu()" class="category-toggle-btn">☰ Categories</button>
+          <div *ngIf="categoryMenuVisible" class="category-menu">
+            <button (click)="selectCategory('default')">Recipes</button>
+            <button (click)="selectCategory('user')">User Recipes</button>
+          </div>
+        </div>
       
-      <div *ngIf="categoryMenuVisible" class="category-menu">
-        <button (click)="selectCategory('default')">Recipes</button>
-        <button (click)="selectCategory('user')">User Recipes</button>
+        <!-- Recipe Header -->
+        <h3>
+          {{ activeCategory === 'default' ? 'Recipes' : 'User Recipes' }} ({{ filteredMeals.length }})
+        </h3>
       </div>
 
       <!-- Default Recipes Sidebar -->
@@ -40,7 +46,7 @@
         <li *ngFor="let meal of filteredMeals" 
             cdkDrag 
             [@dragMove]>
-          {{ meal.name }}
+          {{ meal.name }} - {{ meal.calories }} kcal  <!-- Display calories here -->
         </li>
       </ul>
 
@@ -54,7 +60,7 @@
         <li *ngFor="let meal of userMeals" 
             cdkDrag 
             [@dragMove]>
-          {{ meal.name }}
+          {{ meal.name }} - {{ meal.calories }} kcal  <!-- Display calories here -->
         </li>
       </ul>
     </div>
@@ -88,7 +94,7 @@
                    cdkDrag 
                    [@dragMove] 
                    (click)="removeMealFromDay(meal, day)">
-                {{ meal.name }}
+                {{ meal.name }} - {{ meal.calories }} kcal  <!-- Display calories here -->
               </div>
             </td>
           </tr>
